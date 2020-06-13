@@ -1,0 +1,40 @@
+<form id="form">
+            <input id="currency" autocomplete="off" autofocus placeholder="Currency" type="text">
+            <input type="submit" value="Get Exchange Rate">
+        </form>
+        <br>
+        <div id="result"></div>
+
+<script type="text/javascript">
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector("#form").onsubmit = () => {
+
+
+      // initialize new requests
+      const request = new XMLHttpRequest();
+      const currency = document.querySelector("#currency").value;
+      request.open("POST", "/convert")// this means initialize a new request
+
+      //what to do when request is loaded
+      request.onload = () => {
+        const data = JSON.parse(request.responseText);
+
+        //update the result div
+        if (data.success){
+          const contents = `1 USD equals ${data.rate} ${currency}.`
+          document.querySelector("#result").innerHTML = contents
+        }
+        else{
+          document.querySelector("#result").innerHTML = "There was an error"
+        }
+      }
+
+      const data = new FormData();
+      data.append('currency', currency)
+
+      request.send(data);
+      return false
+    }
+  })
+</script> 

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul class="flashes">
+{% for message in messages %}
+<li>{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+<section class="new-messages">
+  <h1 class="chatroom-title">This is the <span id='insert_chatroom'></span> chatroom</h1>
+  <div id='loaded_messages'>
+
+  </div>
+
+</section>
+
+<form class="message-form">
+  <footer class="message-box">
+    <textarea  id="text-message" name="name" rows="1" cols="140" placeholder="Type message here"></textarea>
+  </footer>
+
+</form>
+
+{% endblock %}

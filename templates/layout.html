@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/style.css">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='layout.js') }}"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  </head>
+  <body>
+    <nav class="navbar">
+      <a id="log_out"class="navbar-brand" href="/logout">Log Out</a>
+    </nav>
+    <nav class="vertical-nav">
+      <div class="current-user">
+        <p>Currently Logged in as:<br> <b id='username'></b></p>
+      </div>
+      <p class="nav-info"><b>People online</b></p>
+      <div class="line-div">
+        <hr class="line">
+      </div>
+      <div id="online-users">
+        <ul class='currently_online'>
+          {% for name in names %}
+            <li>{{name}}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <p class="nav-info"><b>Chatrooms</b><a class='new_chatroom' href=""><b>+</b></a></p>
+      <div class="line-div">
+        <hr class="line">
+      </div>
+      <div class="chatrooms">
+        <ul class='current-chatrooms' onclick="chatroom(event)">
+          <li class="current-chatroom-names">main</li>
+          {% for chatroom in chatrooms %}
+            <li class='current-chatroom-names'>{{chatroom}}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <hr>
+    </nav>
+    <div class="main">
+      <div id="popup-window-new-chatroom">
+        <h2>Create a new Chatroom</h2>
+        <form class="create-chatroom" action="/new_chatroom" method="post">
+          <input id='chatroom-name' type="text" name="chatroom-name">
+          <button id="new_chatroom-button" type="submit" name="chatroom-create">Create Chatroom</button>
+          <button type="button" id="cancel-popup">Cancel</button>
+        </form>
+      </div>
+      {% block body %}{% endblock %}
+    </div>
+
+  </body>

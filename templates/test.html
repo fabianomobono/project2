@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>One page app test</title>
+    <script type="text/javascript">
+
+      document.addEventListener("DOMContentLoaded", () => {
+
+        load_page('first')
+        console.log("hello")
+
+        // for all the links
+        document.querySelectorAll(".nav-link").forEach(link => {
+          link.onclick = () => {
+            load_page(link.dataset.page)
+
+            // prevent page from reloading
+            return false
+          }
+        });
+
+      })
+
+      window.onpopstate = e => {
+        const data = e.state;
+        document.title = data.title
+        document.querySelector("#body").innerHTML = data.text;
+      }
+
+      // define the function that does the requests
+      function load_page(name){
+        const request = new XMLHttpRequest();
+        request.open("GET", `/${name}`);
+        request.onload = () => {
+          const response = request.responseText;
+          document.querySelector("#body").innerHTML = response
+
+          // update title
+          document.title = name
+
+          // push url
+          history.pushState({"title": name, "text":response}, name, name)
+        }
+        request.send();
+      }
+
+    </script>
+  </head>
+  <body>
+    <ul id ="nav">
+      <li><a href="" class="nav-link" data-page="first">First</a></li>
+      <li><a href="" class="nav-link" data-page="second">Second</a></li>
+      <li><a href="" class="nav-link" data-page="third">Third</a></li>
+    </ul>
+    <hr>
+    <div id="body">
+
+    </div>
+  </body>
+</html>
